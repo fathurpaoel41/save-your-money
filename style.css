@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;1,300&family=PT+Sans:ital,wght@0,400;1,400;1,700&family=Roboto+Mono:wght@300&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+  font-family: "PT Sans", sans-serif;
+  font-family: "Roboto Mono", monospace;
+  background-color: #f4e8d1;
+}
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+}
+
+.navbar i {
+  background-color: #333;
+  letter-spacing: 90px;
+  color: #f2f2f2;
+  text-align: center;
+  display: inline-block;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  margin: 0px auto;
+}
+
+.navbar i {
+  background-color: #333;
+}
+
+.navbar i:hover {
+  background: #f1f1f1;
+  color: black;
+  cursor: pointer;
+}
+
+.active-nav {
+  background: #f1f1f1;
+  color: black;
+}
+
+.container {
+  margin: 1rem;
+  /* border: 1px solid black; */
+}
+
+.title {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.content {
+  margin: 0.5rem;
+  width: auto;
+}
+
+#ringkasan_transaksi {
+  display: block;
+}
+
+#tambah_transaksi {
+  display: none;
+}
+
+#riwayat_transaksi {
+  display: none;
+}
+
+.input {
+  /* position: relative; */
+  width: 100%;
+  margin: 3px;
+}
+
+.button:hover {
+  color: #f1f1f1;
+  background-color: #333;
+  cursor: pointer;
+}

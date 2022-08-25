@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save Your Money</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link href="asset/fontawesome-free-6.1.2-web/css/fontawesome.css" rel="stylesheet">
+    <link href="asset/fontawesome-free-6.1.2-web/css/brands.css" rel="stylesheet">
+    <link href="asset/fontawesome-free-6.1.2-web/css/solid.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <i class="fa-solid fa-chart-pie" onClick="ringkasan_transaksi()" title="Ringkasan Transaksi"></i>
+        <i class="fa-solid fa-circle-plus" onClick="tambah_transaksi()" title="Tambah Transaksi"></i>
+        <i class="fa-solid fa-table-list" onClick="riwayat_transaksi()" title="Riwayat Transaksi"></i>
+    </div>
+
+    <!-- RINGKASAN TRANSAKSI -->
+    <div id="ringkasan_transaksi">
+        <div class="container">
+            <div class="title">
+                Ringkasan Transaksi
+            </div>
+            <div class="content">
+                This is Content
+            </div>
+        </div>
+    </div>
+
+    <!-- TAMBAH TRANSAKSI -->
+    <div id="tambah_transaksi">
+        <div class="container">
+            <div class="title">
+                Tambah Transaksi
+            </div>
+            <div class="content">
+                <label for="total">Total :</label><br />
+                <input id="total" class="input" type="number" name="total"
+                    placeholder="Input Total Transaksi Hari ini"><br />
+                <label for="kategori">Kategori :</label><br />
+                <select id="kategori" class="input" catatan="kategori">
+                    <option value="" selected disabled hidden>--Pilih Kategori--</option>
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="opel">Opel</option>
+                    <option value="audi">Audi</option>
+                </select><br />
+                <label for="catatan">Catatan :</label><br />
+                <textarea id="catatan" class="input" placeholder="Masukan Catatan disini"
+                    name="catatan"></textarea><br />
+                <label for="tanggal">Tanggal :</label><br />
+                <input id="tanggal" class="input" type="date" name="tanggal"
+                    placeholder="Input Total Transaksi Hari ini"><br /><br />
+                <input type="submit" id="save_transaksi" value="Simpan" class="input button">
+            </div>
+        </div>
+    </div>
+
+    <!-- RIWAYAT TRANSAKSI -->
+    <div id="riwayat_transaksi">
+        <div class="container">
+            <div class="title">
+                Riwayat Transaksi
+            </div>
+            <div class="content">
+                This is Content
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="script.js"></script>
+</body>
+
+</html>
