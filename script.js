@@ -1,11 +1,6 @@
-// window.onload = function () {
-//     let transaksi = localStorage.getItem("transaksi");
-//     if (transaksi == false) {
-//         let arr = []
-//         localStorage.setItem("transaksi", JSON.stringify(arr))
-//     }
-//     console.log(transaksi)
-// }
+window.onload = function () {
+    spillTransaksi();
+}
 
 function ringkasan_transaksi() {
     document.getElementById("ringkasan_transaksi").style.display = "block";
@@ -32,7 +27,6 @@ function simpan_transaksi() {
     let tanggal = document.getElementById("tanggal").value;
     let kategori = cari_kategori(sub_kategori);
     let arrTransaksi = null;
-    let totalTransaksi = null;
     let obj = {
         id: Date.now(),
         kategori: kategori,
@@ -43,31 +37,57 @@ function simpan_transaksi() {
     }
 
     total = parseInt(total)
+    let objTotal = {
+        pemasukan: 0,
+        pengeluaran: 0
+    }
 
     // SIMPAN TOTAL TRANSAKSI
     if (localStorage.getItem("transaksi") == null || localStorage.getItem("totalTransaksi") == null) {
+
         arrTransaksi = [obj];
         localStorage.setItem("transaksi", JSON.stringify(arrTransaksi));
         if (kategori == "pemasukan") {
-            localStorage.setItem("totalTransaksi", total);
+            objTotal = {
+                pemasukan: total,
+                pengeluaran: 0
+            }
+            localStorage.setItem("totalTransaksi", JSON.stringify(objTotal));
         } else {
-            localStorage.setItem("totalTransaksi", -total);
+            objTotal = {
+                pemasukan: 0,
+                pengeluaran: total
+            }
+            localStorage.setItem("totalTransaksi", JSON.stringify(objTotal));
         }
     } else {
         let getTransaksi = JSON.parse(localStorage.getItem("transaksi"))
-        let getTotalTransaksi = parseInt(localStorage.getItem("totalTransaksi"));
+        let getTotalTransaksi = JSON.parse(localStorage.getItem("totalTransaksi"));
+        objTotal = {
+            pemasukan: getTotalTransaksi.pemasukan,
+            pengeluaran: getTotalTransaksi.pengeluaran
+        }
         if (kategori == "pemasukan") {
-            totalTransaksi = getTotalTransaksi + total
-            localStorage.setItem("totalTransaksi", totalTransaksi);
+            objTotal = {
+                pemasukan: objTotal.pemasukan + total,
+                pengeluaran: getTotalTransaksi.pengeluaran
+            }
+            localStorage.setItem("totalTransaksi", JSON.stringify(objTotal));
         } else {
-            totalTransaksi = getTotalTransaksi - total
-            localStorage.setItem("totalTransaksi", totalTransaksi);
+            objTotal = {
+                pemasukan: objTotal.pemasukan - total,
+                pengeluaran: objTotal.pengeluaran + total
+            }
+            localStorage.setItem("totalTransaksi", JSON.stringify(objTotal));
         }
 
         // SIMPAN RIWAYAT TRANSAKSI
         getTransaksi.push(obj);
         localStorage.setItem("transaksi", JSON.stringify(getTransaksi))
     }
+
+    clearForm();
+    spillTransaksi();
 }
 
 function cari_kategori(kategori) {
@@ -84,4 +104,21 @@ function cari_kategori(kategori) {
         }
     }
     return result;
+}
+
+function clearForm() {
+
+    const inputs = document.querySelectorAll('#total, #kategori, #catatan, #tanggal');
+
+    inputs.forEach(input => {
+        input.value = '';
+    });
+}
+
+function spillTransaksi() {
+    let spillPemasukan = document.getElementById("spillPemasukan");
+    let spillPengeluaran = document.getElementById("spillPengeluaran");
+    let getTotalTransaksi = JSON.parse(localStorage.getItem("totalTransaksi"));
+    spillPemasukan.innerText = `Rp. ${getTotalTransaksi.pemasukan}`;
+    spillPengeluaran.innerText = `Rp. ${getTotalTransaksi.pengeluaran}`;
 }
