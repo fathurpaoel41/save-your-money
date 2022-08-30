@@ -143,3 +143,32 @@
   text-decoration: none;
   cursor: pointer;
 }
+
+.table {
+  border: 2px solid rgb(148, 96, 13);
+  color: black;
+  width: 100%;
+  text-align: center;
+}
+
+tr th {
+  padding: 10px;
+  border: 1px solid rgb(148, 96, 13);
+}
+
+tr td {
+  padding: 4px;
+  border: 1px solid rgb(148, 96, 13);
+}
+
+/* #table tr:nth-child(even) {
+    background-color: grey !important;
+  } */
+
+a {
+  cursor: pointer;
+}
+
+a:hover {
+  background-color: rgb(148, 96, 13);
+}

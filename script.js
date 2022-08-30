@@ -1,5 +1,6 @@
 window.onload = function () {
     spillTransaksi();
+    reloadTable();
 }
 
 function ringkasan_transaksi() {
@@ -88,6 +89,7 @@ function simpan_transaksi() {
 
     clearForm();
     spillTransaksi();
+    reloadTable();
     openModal("Transaksi Berhasil Dibuat");
 }
 
@@ -139,4 +141,27 @@ function openModal(text) {
 function closeModal() {
     let modal = document.getElementById("modal");
     modal.style.display = "none";
+}
+
+function reloadTable() {
+    let getDataTransaksi = JSON.parse(localStorage.getItem("transaksi"))
+    let table = document.getElementById("table");
+    getDataTransaksi.map((res, key) => {
+        let row = table.insertRow(-1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
+
+        cell1.innerHTML = key + 1;
+        cell2.innerHTML = res.tanggal;
+        cell3.innerHTML = res.kategori;
+        cell4.innerHTML = `Rp ${res.total} `;
+        cell5.innerHTML = `<a class='delete-table' onClick='deleteData(${key + 1})'>delete</a>`
+    })
+}
+
+function deleteData(key) {
+    document.getElementById("table").deleteRow(key);
 }
