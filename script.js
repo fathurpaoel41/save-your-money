@@ -88,6 +88,7 @@ function simpan_transaksi() {
 
     clearForm();
     spillTransaksi();
+    openModal("Transaksi Berhasil Dibuat");
 }
 
 function cari_kategori(kategori) {
@@ -121,4 +122,21 @@ function spillTransaksi() {
     let getTotalTransaksi = JSON.parse(localStorage.getItem("totalTransaksi"));
     spillPemasukan.innerText = `Rp. ${getTotalTransaksi.pemasukan}`;
     spillPengeluaran.innerText = `Rp. ${getTotalTransaksi.pengeluaran}`;
+}
+
+function openModal(text) {
+    let modal = document.getElementById("modal");
+    let span = document.getElementsByClassName("close")[0];
+    let p = document.getElementById("text-modal");
+
+    p.innerHTML = text;
+    modal.style.display = "block";
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+}
+
+function closeModal() {
+    let modal = document.getElementById("modal");
+    modal.style.display = "none";
 }
