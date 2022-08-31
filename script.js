@@ -37,50 +37,13 @@ function simpan_transaksi() {
         tanggal: tanggal
     }
 
-    total = parseInt(total)
-    let objTotal = {
-        pemasukan: 0,
-        pengeluaran: 0
-    }
-
     // SIMPAN TOTAL TRANSAKSI
-    if (localStorage.getItem("transaksi") == null || localStorage.getItem("totalTransaksi") == null) {
+    if (localStorage.getItem("transaksi") == null) {
 
         arrTransaksi = [obj];
         localStorage.setItem("transaksi", JSON.stringify(arrTransaksi));
-        if (kategori == "pemasukan") {
-            objTotal = {
-                pemasukan: total,
-                pengeluaran: 0
-            }
-            localStorage.setItem("totalTransaksi", JSON.stringify(objTotal));
-        } else {
-            objTotal = {
-                pemasukan: 0,
-                pengeluaran: total
-            }
-            localStorage.setItem("totalTransaksi", JSON.stringify(objTotal));
-        }
     } else {
         let getTransaksi = JSON.parse(localStorage.getItem("transaksi"))
-        let getTotalTransaksi = JSON.parse(localStorage.getItem("totalTransaksi"));
-        objTotal = {
-            pemasukan: getTotalTransaksi.pemasukan,
-            pengeluaran: getTotalTransaksi.pengeluaran
-        }
-        if (kategori == "pemasukan") {
-            objTotal = {
-                pemasukan: objTotal.pemasukan + total,
-                pengeluaran: getTotalTransaksi.pengeluaran
-            }
-            localStorage.setItem("totalTransaksi", JSON.stringify(objTotal));
-        } else {
-            objTotal = {
-                pemasukan: objTotal.pemasukan - total,
-                pengeluaran: objTotal.pengeluaran + total
-            }
-            localStorage.setItem("totalTransaksi", JSON.stringify(objTotal));
-        }
 
         // SIMPAN RIWAYAT TRANSAKSI
         getTransaksi.push(obj);
@@ -89,7 +52,7 @@ function simpan_transaksi() {
 
     clearForm();
     spillTransaksi();
-    reloadTable();
+    addTable(obj);
     openModal("Transaksi Berhasil Dibuat");
 }
 
@@ -121,9 +84,20 @@ function clearForm() {
 function spillTransaksi() {
     let spillPemasukan = document.getElementById("spillPemasukan");
     let spillPengeluaran = document.getElementById("spillPengeluaran");
-    let getTotalTransaksi = JSON.parse(localStorage.getItem("totalTransaksi"));
-    spillPemasukan.innerText = `Rp. ${getTotalTransaksi.pemasukan}`;
-    spillPengeluaran.innerText = `Rp. ${getTotalTransaksi.pengeluaran}`;
+    let getTransaksi = JSON.parse(localStorage.getItem("transaksi"));
+    let pemasukan = 0;
+    let pengeluaran = 0;
+    getTransaksi.forEach(res => {
+        if (res.kategori === "pemasukan") {
+            pemasukan = pemasukan + parseInt(res.total)
+        } else {
+            pemasukan = pemasukan - parseInt(res.total)
+            pengeluaran = pengeluaran + parseInt(res.total)
+        }
+    })
+
+    spillPemasukan.innerText = `Rp. ${pemasukan}`;
+    spillPengeluaran.innerText = `Rp. ${pengeluaran}`;
 }
 
 function openModal(text) {
@@ -143,11 +117,41 @@ function closeModal() {
     modal.style.display = "none";
 }
 
+function closeModalDetailData() {
+    let modal = document.getElementById("modalDetail");
+    modal.style.display = "none";
+}
+
+function closeModalDeleteData() {
+    let modal = document.getElementById("deleteTransaksi");
+    modal.style.display = "none";
+}
+
+function addTable(res) {
+    let getDataTransaksi = JSON.parse(localStorage.getItem("transaksi"))
+    let key = getDataTransaksi.length
+    let table = document.getElementById("table");
+    let row = table.insertRow(-1);
+    row.id = `baris${key + 1}`;
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
+
+    cell1.innerHTML = key + 1;
+    cell2.innerHTML = res.tanggal;
+    cell3.innerHTML = res.kategori;
+    cell4.innerHTML = `Rp ${res.total} `;
+    cell5.innerHTML = `<a id='${key + 1}' class='delete-table' onClick='confirmDeleteData(${key + 1},${res.id})'>delete</a> <a id='${key + 1}' class='detail-table' onClick='detailData(${key + 1},${res.id})'>Detail</a>`
+}
+
 function reloadTable() {
     let getDataTransaksi = JSON.parse(localStorage.getItem("transaksi"))
     let table = document.getElementById("table");
     getDataTransaksi.map((res, key) => {
         let row = table.insertRow(-1);
+        row.id = `baris${key + 1}`;
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
@@ -158,10 +162,53 @@ function reloadTable() {
         cell2.innerHTML = res.tanggal;
         cell3.innerHTML = res.kategori;
         cell4.innerHTML = `Rp ${res.total} `;
-        cell5.innerHTML = `<a class='delete-table' onClick='deleteData(${key + 1})'>delete</a>`
+        cell5.innerHTML = `<a id='${key + 1}' class='delete-table' onClick='confirmDeleteData(${key + 1},${res.id})'>delete</a> <a id='${key + 1}' class='detail-table' onClick='detailData(${key + 1},${res.id})'>Detail</a>`
     })
 }
 
-function deleteData(key) {
-    document.getElementById("table").deleteRow(key);
+function confirmDeleteData(key, id) {
+    let modal = document.getElementById("deleteTransaksi");
+    let span = document.getElementsByClassName("close")[0];
+    let p = document.getElementById("text-modal-delete-transaksi");
+
+    p.innerHTML = `<p align='justify'>
+    Apakah anda yakin ingin menghapus data transaksi ini ? <br/><br/>
+    <center><input type="submit" value="Hapus" onClick="deleteData(${key},${id})"> <input type="submit" value="Batal" onClick="closeModalDeleteData()"></center>
+    </p>`;
+    modal.style.display = "block";
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+}
+
+function deleteData(key, id) {
+    closeModalDeleteData()
+    let getTransaksi = JSON.parse(localStorage.getItem('transaksi'));
+    let indexIdTransaksi = getTransaksi.findIndex(r => r.id == id);
+    getTransaksi.splice(indexIdTransaksi, 1);
+    localStorage.setItem("transaksi", JSON.stringify(getTransaksi))
+    document.getElementById(`baris${key}`).remove();
+    spillTransaksi();
+    openModal("Transaksi Berhasil DiHapus");
+}
+
+function detailData(key, id) {
+    let getTransaksi = JSON.parse(localStorage.getItem("transaksi"));
+    getTransaksi = getTransaksi[key - 1]
+    let modal = document.getElementById("modalDetail");
+    let span = document.getElementsByClassName("close")[0];
+    let p = document.getElementById("text-modal-detail");
+
+
+    p.innerHTML = `<p align='justify'>
+    Tanggal : ${getTransaksi.tanggal} <br />
+    Kategori : ${getTransaksi.kategori} <br />
+    Sub Kategori : ${getTransaksi.sub_kategori} <br />
+    Total : ${getTransaksi.total} <br />
+    Catatan : ${getTransaksi.catatan} <br />
+    </p>`;
+    modal.style.display = "block";
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
 }

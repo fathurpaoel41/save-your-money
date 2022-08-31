@@ -172,3 +172,8 @@ a {
 a:hover {
   background-color: rgb(148, 96, 13);
 }
+
+input[type="submit"]:hover {
+  background-color: rgb(148, 96, 13);
+  cursor: pointer;
+}
