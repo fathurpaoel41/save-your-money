@@ -13,6 +13,14 @@
 </head>
 
 <body>
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onClick="closeModal()">&times;</span>
+            <p id="text-modal"></p>
+        </div>
+    </div>
+
     <!-- Navbar -->
     <div class="navbar">
         <i class="fa-solid fa-chart-pie" onClick="ringkasan_transaksi()" title="Ringkasan Transaksi"></i>
@@ -105,11 +113,17 @@
     </div>
 
 
-    <!-- Modal -->
-    <div id="modal" class="modal">
+    <div id="modalDetail" class="modal">
         <div class="modal-content">
-            <span class="close" onClick="closeModal()">&times;</span>
-            <p id="text-modal"></p>
+            <span class="close" onClick="closeModalDetailData()">&times;</span>
+            <p id="text-modal-detail"></p>
+        </div>
+    </div>
+
+    <div id="deleteTransaksi" class="modal">
+        <div class="modal-content">
+            <span class="close" onClick="closeModalDeleteData()">&times;</span>
+            <p id="text-modal-delete-transaksi"></p>
         </div>
     </div>
 
